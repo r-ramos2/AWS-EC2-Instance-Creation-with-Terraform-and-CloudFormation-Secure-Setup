@@ -1,4 +1,4 @@
-# AWS EC2 Instance Creation with Terraform (Secure Setup)
+# AWS EC2 Instance Creation with Terraform and CloudFormation Secure Setup
 
 ## Overview
 
