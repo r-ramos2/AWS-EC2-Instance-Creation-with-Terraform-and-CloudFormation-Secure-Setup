@@ -33,6 +33,10 @@ aws configure
 aws sts get-caller-identity
 ```
 
+```bash
+curl ifconfig.me
+```
+
 > **Security Note**: Use an IAM user with only the permissions necessary to create EC2 instances and security groups. Avoid sharing access keys, and store them securely.
 
 ---
