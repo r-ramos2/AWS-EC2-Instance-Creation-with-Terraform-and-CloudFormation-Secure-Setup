@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template to launch an EC2 instance with restricted SSH access in us-east-1 only.
+
+Parameters:
+  InstanceType:
+    Type: String
+    Description: EC2 instance type (e.g., t2.micro for free tier)
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+    ConstraintDescription: Must be a valid EC2 instance type.
+
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance.
+    ConstraintDescription: Must be the name of an existing EC2 KeyPair.
+    # Ensure that the key pair is created in the same region (us-east-1).
+
+  AmiId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Description: AMI ID for the EC2 instance.
+    Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
+    ConstraintDescription: Must be a valid AMI ID.
+    # This parameter uses the latest Amazon Linux 2 AMI, which will resolve based on the region.
+
+  MyIp:
+    Type: String
+    Description: Your IP address to allow SSH access.
+    Default: 0.0.0.0/0  # Replace with your own IP in CIDR format
+    ConstraintDescription: Must be a valid IP CIDR range (e.g., 203.0.113.0/32).
+
+Conditions:
+  IsUSEast1: !Equals [ !Ref "AWS::Region", "us-east-1" ]
+
+Resources:
+  # Security Group allowing restricted SSH access
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Condition: IsUSEast1
+    Properties:
+      GroupDescription: Security group for EC2 instance allowing SSH access.
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref MyIp
+          # Only allows SSH from the IP specified in the MyIp parameter
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          FromPort: 0
+          ToPort: 0
+          CidrIp: 0.0.0.0/0
+          # Allows all outbound traffic
+
+  # EC2 instance
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Condition: IsUSEast1
+    Properties:
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      ImageId: !Ref AmiId
+      SecurityGroups:
+        - !Ref EC2SecurityGroup
+      Tags:
+        - Key: Name
+          Value: MyEC2Instance
+
+Outputs:
+  InstanceId:
+    Description: ID of the EC2 instance
+    Value: !Ref EC2Instance
+    Condition: IsUSEast1
+
+  InstancePublicIp:
+    Description: Public IP address of the EC2 instance
+    Value: !GetAtt EC2Instance.PublicIp
+    Condition: IsUSEast1
