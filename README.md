@@ -79,6 +79,10 @@ curl ifconfig.me
    terraform apply
    ```
 
+   ```bash
+   aws ec2 describe-instances
+   ```
+   
 > **Security Tip**: Avoid using `-auto-approve` in production environments; always review proposed changes before applying.
 
 ---
