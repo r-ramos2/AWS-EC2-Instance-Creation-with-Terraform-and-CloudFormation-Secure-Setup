@@ -29,6 +29,10 @@ Before you begin, configure the AWS CLI with an IAM user that follows the **leas
 aws configure
 ```
 
+```bash
+aws sts get-caller-identity
+```
+
 > **Security Note**: Use an IAM user with only the permissions necessary to create EC2 instances and security groups. Avoid sharing access keys, and store them securely.
 
 ---
