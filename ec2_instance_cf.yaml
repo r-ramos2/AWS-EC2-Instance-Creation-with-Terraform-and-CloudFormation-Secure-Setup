@@ -25,7 +25,7 @@ Parameters:
 
   MyIp:
     Type: String
-    Description: Your IP address to allow SSH access (format: x.x.x.x/32).
+    Description: Your IP address to allow SSH access.
     Default: 0.0.0.0/0  # Replace with your own IP in CIDR format
     ConstraintDescription: Must be a valid IP CIDR range (e.g., 203.0.113.0/32).
 
