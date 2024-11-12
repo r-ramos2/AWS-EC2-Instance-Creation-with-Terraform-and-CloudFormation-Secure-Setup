@@ -82,6 +82,10 @@ curl ifconfig.me
    ```bash
    aws ec2 describe-instances
    ```
+
+   ```bash
+   aws ec2 describe-instances --instance-ids i-xxxxxxxxxxxxxxxxx --query "Reservations[*].Instances[*].PublicIpAddress" --output text
+   ```
    
 > **Security Tip**: Avoid using `-auto-approve` in production environments; always review proposed changes before applying.
 
