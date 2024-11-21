@@ -1,5 +1,5 @@
 # provider.tf
 
 provider "aws" {
-  region = "us-east-1"  # Set your default region
+  region = var.region  # Dynamically set the region from variables.tf
 }
