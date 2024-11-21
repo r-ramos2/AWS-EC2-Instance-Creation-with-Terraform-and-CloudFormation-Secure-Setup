@@ -1,8 +1,13 @@
 # main.tf
 
+# Generate a random string for the security group name
+resource "random_id" "sg_id" {
+  byte_length = 8  # Generates a random 8-byte ID
+}
+
 # Security group with restricted access
 resource "aws_security_group" "ec2_security_group" {
-  name        = "ec2_security_group"
+  name        = "ec2_security_group-${random_id.sg_id.hex}"  # Adding random suffix
   description = "Security group for EC2 instance allowing SSH access"
 
   # Allow SSH access from a specific IP only
