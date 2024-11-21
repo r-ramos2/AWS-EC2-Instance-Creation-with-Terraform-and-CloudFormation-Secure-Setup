@@ -1,21 +1,27 @@
 # variables.tf
 
-variable "instance_type" {
-  description = "Type of instance to launch"
+variable "region" {
+  description = "AWS region"
   type        = string
-  default     = "t2.micro"  # Free tier eligible instance type
-}
-
-variable "key_pair_name" {
-  description = "Name of the existing key pair to use for SSH access"
-  type        = string
-  default     = "my-key-pair"  # Replace my-key-pair with your actual key pair name
+  default     = "us-east-1"  # Change to your desired region
 }
 
 variable "ami_id" {
   description = "AMI ID for the EC2 instance"
   type        = string
-  default     = "ami-xxxxxxxxxxxxxxxxx"  # Amazon Linux 2 AMI for us-east-1 (update for your region)
+  default     = "ami-xxxxxxxxxxxxxxxxxxx"  # Amazon Linux 2 AMI for us-east-1 (update for your region)
+}
+
+variable "instance_type" {
+  description = "Type of EC2 instance"
+  type        = string
+  default     = "t2.micro"  # Free tier eligible instance type
+}
+
+variable "key_pair_name" {
+  description = "Name of the existing key pair"
+  type        = string
+  default     = "my-key-pair"  # Replace with your actual key pair name
 }
 
 variable "my_ip" {
